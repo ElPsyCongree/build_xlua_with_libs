@@ -389,7 +389,7 @@ namespace MikuLuaProfiler
         protected override void RowGUI(RowGUIArgs args)
         {
             GUIStyle gs = new GUIStyle();
-            gs.normal.textColor = new Color(0.8f, 0.8f, 0.8f);
+            //gs.normal.textColor = new Color(0.8f, 0.8f, 0.8f);
             gs.alignment = TextAnchor.MiddleCenter;
 
             var item = (LuaProfilerTreeViewItem)args.item;

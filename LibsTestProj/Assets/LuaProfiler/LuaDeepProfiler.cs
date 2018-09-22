@@ -418,39 +418,39 @@ namespace MikuLuaProfiler
         }
         private static bool CheckIsLeftTable(string line)
         {
-            return line.Contains("{") && !Regex.IsMatch(line, @""".*{.*?""");
+            return line.Contains("{");
         }
         private static bool CheckIsRightTable(string line)
         {
-            return line.Contains("}") && !Regex.IsMatch(line, @""".*}.*?""");
+            return line.Contains("}");
         }
         private static bool CheckIsEndLine(string line)
         {
-            return Regex.IsMatch(line, @"(?<=(^|\s))end(?=(,|$|\s|\)))") && !Regex.IsMatch(line, @""".*(^|\s)end(\s|\(|$).*?""");
+            return Regex.IsMatch(line, @"(?<=(^|\s))end(?=(,|$|\s|\)))");
         }
         private static bool CheckIsReturnLine(string line)
         {
-            return Regex.IsMatch(line, @"(?<=(^|\s))return(?=(\s|\(|$))") && !Regex.IsMatch(line, @""".*(^|\s)return(\s|\(|$).*?""");
+            return Regex.IsMatch(line, @"(?<=(^|\s))return(?=(\s|\(|$))");
         }
         private static bool CheckIsLocalLine(string line)
         {
-            return Regex.IsMatch(line, @"(?<=(^|\s))local(?=(\s|\(|$))") && !Regex.IsMatch(line, @""".*(^|\s)local(\s|\(|$).*?""");
+            return Regex.IsMatch(line, @"(?<=(^|\s))local(?=(\s|\(|$))");
         }
         private static bool CheckIsFunctionLine(string line)
         {
-            return Regex.IsMatch(line, @"(?<=(\(|,|^|\s|\=))function(?=(\s|\())") && !Regex.IsMatch(line, @""".*(\(|,|^|\s|\=)function(\s|\().*?""");
+            return Regex.IsMatch(line, @"(?<=(\(|,|^|\s|\=))function(?=(\s|\())");
         }
         private static bool CheckIsForLine(string line)
         {
-            return Regex.IsMatch(line, @"(?<=(^|\s))for(?=(\s|\(|$))") && !Regex.IsMatch(line, @""".*(^|\s)for(\s|\(|$).*?""");
+            return Regex.IsMatch(line, @"(?<=(^|\s))for(?=(\s|\(|$))");
         }
         private static bool CheckIsIfLine(string line)
         {
-            return Regex.IsMatch(line, @"(?<=(^|\s))if(?=(\s|\(|$))") && !Regex.IsMatch(line, @""".*(^|\s)if(\s|\(|$).*?""");
+            return Regex.IsMatch(line, @"(?<=(^|\s))if(?=(\s|\(|$))");
         }
         private static bool CheckIsWhileLine(string line)
         {
-            return Regex.IsMatch(line, @"(?<=(^|\s))while(?=(\s|\(|$))") && !Regex.IsMatch(line, @""".*(^|\s)while(\s|\(|$).*?""");
+            return Regex.IsMatch(line, @"(?<=(^|\s))while(?=(\s|\(|$))");
         }
         #endregion
 
@@ -731,22 +731,6 @@ namespace MikuLuaProfiler
         {
             return mt.Value.Replace("-", "\'");
         }
-        private static string MatchStrLeft(Match mt)
-        {
-            return mt.Value.Replace("{", "\'");
-        }
-        private static string MatchStrLeftRec(Match mt)
-        {
-            return mt.Value.Replace("\'", "{");
-        }
-        private static string MatchStrRight(Match mt)
-        {
-            return mt.Value.Replace("}", "\'");
-        }
-        private static string MatchStrRightRec(Match mt)
-        {
-            return mt.Value.Replace("\'", "}");
-        }
         private static string PrettyOrAnd(string allCode)
         {
             Regex reg = new Regex(@"(\n|\r\n)\s+(or|and|\+|-|\*|/|\%|\^)");
@@ -761,13 +745,8 @@ namespace MikuLuaProfiler
         }
         private static string PrettyTable(string allCode)
         {
-            allCode = Regex.Replace(allCode, "\".*\"", MatchStrLeft);
             allCode = allCode.Replace("{", "{\r\n");
-            allCode = Regex.Replace(allCode, "\".*\"", MatchStrLeftRec);
-
-            allCode = Regex.Replace(allCode, "\".*\"", MatchStrRight);
             allCode = allCode.Replace("}", "\r\n}");
-            allCode = Regex.Replace(allCode, "\".*\"", MatchStrRightRec);
 
             return allCode;
         }

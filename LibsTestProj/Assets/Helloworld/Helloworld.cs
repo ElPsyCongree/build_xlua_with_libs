@@ -10,11 +10,12 @@ using UnityEngine;
 using XLua;
 using System.Collections.Generic;
 using System;
+using MikuLuaProfiler;
 
 public static class GenCfg
 {
     [LuaCallCSharp]
-    static List<Type> cfg = new List<Type>()
+    public static List<Type> cfg = new List<Type>()
     {
         typeof(TextAsset)
     };
@@ -23,7 +24,11 @@ public static class GenCfg
 public class Helloworld : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
+        HookSetup.HookLuaFuns();
+
         LuaEnv luaenv = new LuaEnv();
+        LuaProfiler.SetMainLuaEnv(luaenv);
+
         luaenv.AddBuildin("rapidjson", XLua.LuaDLL.Lua.LoadRapidJson);
         luaenv.AddBuildin("lpeg", XLua.LuaDLL.Lua.LoadLpeg);
         luaenv.AddBuildin("pb", XLua.LuaDLL.Lua.LoadLuaProfobuf);
@@ -76,7 +81,7 @@ public class Helloworld : MonoBehaviour {
         print(data2.contacts[2].phonenumber)
         "
 );
-        luaenv.Dispose();
+        //luaenv.Dispose();
 	}
 	
 	// Update is called once per frame
